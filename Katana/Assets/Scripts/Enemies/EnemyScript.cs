@@ -70,9 +70,9 @@ public class EnemyScript : MonoBehaviour
         {
             switch (_state)
             {
-                case State.Idle:
-                    Idle();
-                    break;
+                //case State.Idle:
+                    //Idle();
+                    //break;
 
                 case State.Chase:
                     Chase();
@@ -90,7 +90,7 @@ public class EnemyScript : MonoBehaviour
             float distance = Vector3.Distance(transform.position, _target.transform.position);
             if (distance > _spotDistance)
             {
-                _state = State.Idle;
+                
             }
 
             else
@@ -125,6 +125,7 @@ public class EnemyScript : MonoBehaviour
     */
 
     //Idle state
+    /*
     private void Idle()
     {
         switch (_enemyType)
@@ -137,6 +138,7 @@ public class EnemyScript : MonoBehaviour
                 break;
         }
     }
+    */
 
     //Chase state
     private void Chase()
