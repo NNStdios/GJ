@@ -1,6 +1,4 @@
 using System.Collections;
-using BananaUtils.OnScreenDebugger.Scripts;
-using KatanaMovement;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -160,6 +158,23 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+    //Flee state
+    private void Flee()
+    {
+        //Flee is some direction this is some random calculation idk
+        Vector3 fleeDirection = -transform.forward;
+        switch (_enemyType)
+        {
+            case EnemyType.Ground:
+                _agent.SetDestination(fleeDirection);
+                break;
+
+            case EnemyType.Flying:
+                MoveToPosition(fleeDirection);
+                break;
+        }
+    }
+
     //Attack state
     private void Attack()
     {   //Raycast based attacking Physics.OverlapSphere can also work well here but the collider issue and it's present with raycasts too ofc.
@@ -188,20 +203,13 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    //Flee state
-    private void Flee()
+    public void TakeDamage(float damage)
     {
-        //Flee is some direction this is some random calculation idk
-        Vector3 fleeDirection = -transform.forward;
-        switch (_enemyType)
-        {
-            case EnemyType.Ground:
-                _agent.SetDestination(fleeDirection);
-                break;
+        _health -= damage;
 
-            case EnemyType.Flying:
-                MoveToPosition(fleeDirection);
-            break;
+        if (_health >= 0)
+        {
+            Destroy(gameObject);
         }
     }
 
