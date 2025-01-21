@@ -63,45 +63,42 @@ public class EnemyScript : MonoBehaviour
         if (_target == null)
         {
             _state = State.Idle;
+            return;
         }
 
-        //State Machine
+        float distance = Vector3.Distance(transform.position, _target.transform.position);
+        if (distance <= _fleeHealth)
+        {
+            _state = State.Flee;
+        }
+
+        else if (distance > _spotDistance)
+        {
+            _state = State.Idle;
+        }
+
         else
         {
-            switch (_state)
-            {
-                //case State.Idle:
-                    //Idle();
-                    //break;
+            _state = State.Chase;
+        }
 
-                case State.Chase:
-                    Chase();
-                    break;
+        switch (_state)
+        {
+            case State.Idle:
+            Idle();
+            break;
 
-                case State.Attack:
-                    Attack();
-                    break;
+            case State.Chase:
+                Chase();
+                break;
 
-                case State.Flee:
-                    Flee();
-                    break;
-            }
+            case State.Attack:
+                Attack();
+                break;
 
-            float distance = Vector3.Distance(transform.position, _target.transform.position);
-            if (distance > _spotDistance)
-            {
-                
-            }
-
-            else
-            {
-                _state = State.Chase;
-            }
-
-            if (_health <= _fleeHealth)
-            {
-                _state = State.Flee;
-            }
+            case State.Flee:
+                Flee();
+                break;
         }
 
         Debug.Log(_target);
@@ -125,7 +122,6 @@ public class EnemyScript : MonoBehaviour
     */
 
     //Idle state
-    /*
     private void Idle()
     {
         switch (_enemyType)
@@ -138,7 +134,6 @@ public class EnemyScript : MonoBehaviour
                 break;
         }
     }
-    */
 
     //Chase state
     private void Chase()
@@ -164,15 +159,17 @@ public class EnemyScript : MonoBehaviour
     private void Flee()
     {
         //Flee is some direction this is some random calculation idk
-        Vector3 fleeDirection = -transform.forward;
+        Vector3 fleeDirection = (transform.position - _target.position).normalized * _spotDistance;
+        Vector3 destination = transform.position + fleeDirection;
+
         switch (_enemyType)
         {
             case EnemyType.Ground:
-                _agent.SetDestination(fleeDirection);
+                _agent.SetDestination(destination);
                 break;
 
             case EnemyType.Flying:
-                MoveToPosition(fleeDirection);
+                MoveToPosition(destination);
                 break;
         }
     }
