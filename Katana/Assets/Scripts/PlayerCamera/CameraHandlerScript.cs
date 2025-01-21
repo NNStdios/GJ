@@ -29,6 +29,7 @@ namespace PlayerCamera
 
         private void OnDestroy()
         {
+            if (PlaySceneManager.CameraManager == null) return;
             PlaySceneManager.CameraManager.Handlers.Remove(this);
         }
 

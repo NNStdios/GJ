@@ -22,15 +22,13 @@ namespace KatanaMovement
         [Header("Components")]
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Collider _collider;
-        [SerializeField] private Transform _model;
 
         [Header("Camera")]
         [SerializeField] private float _cameraSwitchDuration = 1;
         [SerializeField] private Easings.Type _cameraSwitchEasing = Easings.Type.ExpoOut;
         
         [Header("Tilt")]
-        [SerializeField] private float _tiltSpeed = 90;
-        [SerializeField] private float _tiltInvertPoint = 180;
+        [SerializeField] private float _tiltSpeed = 1;
        
         [Header("Flip")]
         [SerializeField] private Vector2 _flipForce = new(20, 25);
@@ -38,8 +36,12 @@ namespace KatanaMovement
         [SerializeField] private TimeScaleKeys _flipTimeScale;
         
         [Header("Dash")]
-        [SerializeField] private float _dashForce = 30;
+        [SerializeField] private float _dashForce = 100;
         [SerializeField] private TimeScaleKeys _dashTimeScale;
+        
+        [Header("Dodge")]
+        [SerializeField] private float _dodgeForce = 30;
+        [SerializeField] private TimeScaleKeys _dodgeTimeScale;
 
         [Header("Strike Hover")]
         [SerializeField] private float _strikeTransitionTime = 3;
@@ -69,6 +71,7 @@ namespace KatanaMovement
             if (Input.GetKeyDown(KeyCode.Q)) ToggleCamera();
             if (Input.GetKeyDown(KeyCode.Space)) Flip();
             if (Input.GetKeyDown(KeyCode.Mouse0)) Dash();
+            if (Input.GetKeyDown(KeyCode.LeftShift)) Dodge();
             if (Input.GetKeyDown(KeyCode.S)) Strike();
         }
 
@@ -84,19 +87,30 @@ namespace KatanaMovement
 
         private void Tilt()
         {
-            var ea = transform.eulerAngles;
-            var amount = Input.GetAxisRaw("Horizontal") * Time.unscaledDeltaTime * _tiltSpeed;
-            amount *= ea.x > 180 ? -1 : 1;
-            amount *= ea.x < -180 ? -1 : 1;
+            // Store mouse input
+            var x = Input.GetAxisRaw("Mouse X") * _tiltSpeed;
+            var y = Input.GetAxisRaw("Mouse Y") * _tiltSpeed;
 
-            // Combine the rotations
-            transform.Rotate(Vector3.up, amount, Space.World);
-            transform.eulerAngles = new(ea.x, transform.eulerAngles.y, ea.z);
+            // Return if there is no input
+            if (x == 0 && y == 0) return;
+            
+            // Apply the rotation
+            var deltaRotX = Quaternion.AngleAxis(x, Vector3.back);
+            var deltaRotY = Quaternion.AngleAxis(y, Vector3.left);
+            var deltaRot = deltaRotX * deltaRotY;
+            _rb.MoveRotation(_rb.rotation * deltaRot);
         }
-
+        
         private void ToggleCamera()
         {
-            PSM.PlayerCameraHandler = CamHandler == PSM.FPCameraHandler ? PSM.TPCameraHandler : PSM.FPCameraHandler;
+            PSM.PlayerCameraHandler = CamHandler switch
+            {
+                PSM.FPCameraHandler => PSM.RightCameraHandler,
+                PSM.RightCameraHandler => PSM.TPCameraHandler,
+                PSM.TPCameraHandler => PSM.LeftCameraHandler,
+                _ => PSM.FPCameraHandler
+            };
+            
             PSM.CameraManager.SwitchCameraHandler(CamHandler, _cameraSwitchDuration, _cameraSwitchEasing, unscaled: true);
         }
 
@@ -130,6 +144,19 @@ namespace KatanaMovement
             GameManager.TimeScaleManager.UpdateTimeScale(_dashTimeScale);
         }
 
+        private void Dodge()
+        {
+            // Reset velocity
+            _rb.linearVelocity = Vector3.zero;
+            _rb.angularVelocity = Vector3.zero;
+            
+            // Add force
+            _rb.AddForce(-transform.up * _dodgeForce, ForceMode.Impulse);
+            
+            // Apply timescale changes
+            GameManager.TimeScaleManager.UpdateTimeScale(_dodgeTimeScale);
+        }
+
         private void Strike()
         {
             if (_strikeRoutine != null) return;
@@ -156,7 +183,7 @@ namespace KatanaMovement
             var startPos = transform.localPosition;
             var targetPos = Vector3.up * _strikeHoverHeight;
             var startRot = transform.localRotation;
-            var targetRot = Quaternion.Euler(180, startRot.eulerAngles.y, 0);
+            var targetRot = Quaternion.Euler(180, 90, 0);
 
             // Store the timescale and lerp position
             var startTimeScale = Time.timeScale;
@@ -199,7 +226,7 @@ namespace KatanaMovement
                 return;
 
             // Rotate player towards the hit point
-            transform.LookAt(hit.point, Vector3.down);
+            transform.LookAt(hit.point, Vector3.up);
             transform.Rotate(90, 0, 0);
         }
 
