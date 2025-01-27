@@ -1,14 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using NnUtils.Scripts;
 using UnityEngine;
 
-namespace TimeScale
+namespace Assets.Scripts.TimeScale
 {
     public class TimeScaleManager : MonoBehaviour
     {
         private float _fixedDeltaTime;
-        
+
         private float _timeScale = 1;
         public float TimeScale
         {
@@ -27,7 +26,7 @@ namespace TimeScale
 
         private void Start()
         {
-            TimeScale       = Time.timeScale;
+            TimeScale = Time.timeScale;
             _fixedDeltaTime = Time.fixedDeltaTime;
         }
 
@@ -35,7 +34,7 @@ namespace TimeScale
         {
             if (_currentPriority < priority) return;
             this.StopRoutine(ref _updateTimeScaleRoutine);
-            TimeScale        = timeScale;
+            TimeScale = timeScale;
             _currentPriority = null;
         }
 
@@ -63,7 +62,7 @@ namespace TimeScale
                     yield return null;
                 }
             }
-            
+
             _currentPriority = null;
         }
     }

@@ -1,9 +1,9 @@
-using KatanaMovement;
 using UnityEngine;
 using NnUtils.Scripts;
-using PlayerCamera;
+using Assets.Scripts.PlayerCamera;
+using Assets.Scripts.KatanaMovement;
 
-namespace Core
+namespace Assets.Scripts.Core
 {
     [RequireComponent(typeof(CameraManager))]
     public class PlaySceneManager : MonoBehaviour
@@ -13,7 +13,7 @@ namespace Core
         public const string RightCameraHandler = "RightCameraHandler";
         public const string LeftCameraHandler = "LeftCameraHandler";
         public const string StrikeCameraHandler = "StrikeCameraHandler";
-        
+
         private static PlaySceneManager _instance;
         public static PlaySceneManager Instance => _instance = FindFirstObjectByType<PlaySceneManager>();
 
@@ -56,8 +56,8 @@ namespace Core
 
         private void Reset()
         {
-            _cameraManager  = GetComponent<CameraManager>();
-            _player         = GameObject.FindWithTag("Player");
+            _cameraManager = GetComponent<CameraManager>();
+            _player = GameObject.FindWithTag("Player");
             _playerMovement = Player.GetComponent<PlayerMovementScript>();
         }
 
@@ -65,6 +65,13 @@ namespace Core
         {
             if (_instance != null) Destroy(gameObject);
             _instance = this;
+        }
+
+        private void Start()
+        {
+            // TODO: Possibly move this to another script
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 }

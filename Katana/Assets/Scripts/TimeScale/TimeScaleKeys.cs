@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TimeScale
+namespace Assets.Scripts.TimeScale
 {
     [Serializable]
     public struct TimeScaleKeys
@@ -12,7 +12,7 @@ namespace TimeScale
         {
             Keys = new() { key };
         }
-        
+
         public TimeScaleKeys(List<TimeScaleKey> keys)
         {
             Keys = keys;

@@ -1,7 +1,7 @@
 using System;
 using NnUtils.Scripts;
 
-namespace TimeScale
+namespace Assets.Scripts.TimeScale
 {
     [Serializable]
     public struct TimeScaleKey

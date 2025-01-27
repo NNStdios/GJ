@@ -1,8 +1,8 @@
+using Assets.Scripts.TimeScale;
 using NnUtils.Scripts;
-using TimeScale;
 using UnityEngine;
 
-namespace Core
+namespace Assets.Scripts.Core
 {
     [RequireComponent(typeof(TimeScaleManager))]
     public class GameManager : MonoBehaviour
@@ -18,20 +18,20 @@ namespace Core
                     Destroy(value.gameObject);
                     return;
                 }
-                
+
                 _instance = value;
                 DontDestroyOnLoad(_instance.gameObject);
             }
         }
-        
-        [ReadOnly] [SerializeField] private TimeScaleManager _timeScaleManager;
+
+        [ReadOnly][SerializeField] private TimeScaleManager _timeScaleManager;
         public static TimeScaleManager TimeScaleManager => Instance._timeScaleManager;
 
         private void Reset()
         {
             _timeScaleManager = GetComponent<TimeScaleManager>();
         }
-        
+
         private void Awake()
         {
             if (_instance == null) Instance = this;
@@ -40,7 +40,7 @@ namespace Core
 
         private void Start()
         {
-            
+
         }
     }
 }
