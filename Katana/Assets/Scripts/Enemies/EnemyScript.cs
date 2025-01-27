@@ -55,14 +55,14 @@ public class EnemyScript : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (_health <= _fleeHealth)
-        {
-            _state = State.Flee;
-        }
-
-        else if (distance > _spotDistance)
+        if (distance > _spotDistance)
         {
             _state = State.Idle;
+        }
+
+        else if (_health <= _fleeHealth)
+        {
+            _state = State.Flee;
         }
 
         else
@@ -73,8 +73,8 @@ public class EnemyScript : MonoBehaviour
         switch (_state)
         {
             case State.Idle:
-            Idle();
-            break;
+                Idle();
+                break;
 
             case State.Chase:
                 Chase();
