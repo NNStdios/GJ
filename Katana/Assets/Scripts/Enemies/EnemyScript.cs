@@ -20,14 +20,15 @@ public class EnemyScript : MonoBehaviour
 
     [Header("Enemy Stats")]
     [SerializeField] private EnemyType _enemyType;
-    [SerializeField] private float _attackSpeed;
-    [SerializeField] private float _minDamage;
-    [SerializeField] private float _maxDamage;
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _spotDistance;
-    [SerializeField] private float _attackDistance;
-    [SerializeField] private float _maxHealth;
-    [SerializeField] private float _fleeHealth;
+    [SerializeField] private float _attackSpeed = 1.6f;
+    [SerializeField] private float _minDamage = 10;
+    [SerializeField] private float _maxDamage = 20;
+    [SerializeField] private float _moveSpeed = 15;
+    [SerializeField] private float _acceleration = 8;
+    [SerializeField] private float _spotDistance = 50f;
+    [SerializeField] private float _attackDistance = 5f;
+    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _fleeHealth = 20f;
 
     [Header("References")]
     [SerializeField] private Transform _target;
@@ -48,6 +49,7 @@ public class EnemyScript : MonoBehaviour
     {
         _canAttack = true;
         _agent.speed = _moveSpeed;
+        _agent.acceleration = _acceleration;
         _health = _maxHealth;
 
         if (_enemyType == EnemyType.Flying)
