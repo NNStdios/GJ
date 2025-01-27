@@ -27,6 +27,8 @@ namespace Assets.Scripts.Core
         [ReadOnly][SerializeField] private TimeScaleManager _timeScaleManager;
         public static TimeScaleManager TimeScaleManager => Instance._timeScaleManager;
 
+        [HideInInspector]public Transform Player;
+
         private void Reset()
         {
             _timeScaleManager = GetComponent<TimeScaleManager>();
@@ -40,7 +42,7 @@ namespace Assets.Scripts.Core
 
         private void Start()
         {
-
+            Player = GameObject.FindGameObjectWithTag("Player").transform;
         }
     }
 }

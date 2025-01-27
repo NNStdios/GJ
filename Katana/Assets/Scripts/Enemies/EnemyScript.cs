@@ -1,4 +1,5 @@
 using System.Collections;
+using Assets.Scripts.Core;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,33 +13,24 @@ public class EnemyScript : MonoBehaviour
         Flee
     }
 
-    private enum EnemyType
-    {
-        Ground,
-        Flying
-    }
-
     [Header("Enemy Stats")]
-    [SerializeField] private EnemyType _enemyType;
     [SerializeField] private float _attackSpeed = 1.6f;
     [SerializeField] private float _minDamage = 10;
     [SerializeField] private float _maxDamage = 20;
-    [SerializeField] private float _moveSpeed = 15;
-    [SerializeField] private float _acceleration = 8;
     [SerializeField] private float _spotDistance = 50f;
     [SerializeField] private float _attackDistance = 5f;
-    [SerializeField] private float _maxHealth = 100f;
+    [SerializeField] private float _maxHealth = 20f;
     [SerializeField] private float _fleeHealth = 20f;
 
-    [Header("References")]
-    [SerializeField] private Transform _target;
+    [Header("Referecnes")]
+    [SerializeField] private ParticleSystem _bloodParticles;
+
+    private Transform _target;
 
     private NavMeshAgent _agent;
     private State _state;
     private bool _canAttack;
     private float _health;
-
-    private Vector3 _targetPosition;
 
     private void Awake()
     {
@@ -48,20 +40,15 @@ public class EnemyScript : MonoBehaviour
     private void Start()
     {
         _canAttack = true;
-        _agent.speed = _moveSpeed;
-        _agent.acceleration = _acceleration;
         _health = _maxHealth;
 
-        if (_enemyType == EnemyType.Flying)
-        {
-            Destroy(_agent);
-        }
+        _target = GameManager.Instance.Player;
     }
 
     private void Update()
     {   
 
-        //If no target found be idle
+        //If no target found be idle and look for a target
         if (_target == null)
         {
             _state = State.Idle;
@@ -69,7 +56,7 @@ public class EnemyScript : MonoBehaviour
         }
 
         float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (distance <= _fleeHealth)
+        if (_health <= _fleeHealth)
         {
             _state = State.Flee;
         }
@@ -103,57 +90,23 @@ public class EnemyScript : MonoBehaviour
                 break;
         }
 
-        Debug.Log(_target);
+        Debug.Log(_target.position);
     }
-
-    /* //Find target function finds targets this would be useful if the game was networked didn't use it here.
-    //As the collider is a child and I don't really think there is a point looking in children for colliders better to just ref the target.
-    private void FindTarget()
-    {
-        Collider[] colliders;
-        colliders = Physics.OverlapSphere(transform.position, _spotDistance);
-
-        foreach (Collider collider in colliders)
-        {
-            if (collider.TryGetComponent<PlayerMovementScript>(out PlayerMovementScript playerMovementScript))
-            {
-                _target = playerMovementScript.transform;
-            }
-        }
-    }
-    */
 
     //Idle state
     private void Idle()
     {
-        switch (_enemyType)
-        {
-            case EnemyType.Ground:
-                _agent.SetDestination(transform.position);
-                break;
-            case EnemyType.Flying:
-                MoveToPosition(transform.position);
-                break;
-        }
+        _agent.SetDestination(transform.position);
     }
 
     //Chase state
     private void Chase()
     {
-        switch (_enemyType)
+        _agent.SetDestination(_target.position);
+
+        if (Vector3.Distance(transform.position, _target.position) < _attackDistance)
         {
-            case EnemyType.Ground:
-                _agent.SetDestination(_target.position);
-
-                if (Vector3.Distance(transform.position, _target.position) < _attackDistance)
-                {
-                    _state = State.Attack;
-                }
-                break;
-
-            case EnemyType.Flying:
-                MoveToPosition(_target.position);
-                break;
+            _state = State.Attack;
         }
     }
 
@@ -164,23 +117,13 @@ public class EnemyScript : MonoBehaviour
         Vector3 fleeDirection = (transform.position - _target.position).normalized * _spotDistance;
         Vector3 destination = transform.position + fleeDirection;
 
-        switch (_enemyType)
-        {
-            case EnemyType.Ground:
-                _agent.SetDestination(destination);
-                break;
-
-            case EnemyType.Flying:
-                MoveToPosition(destination);
-                break;
-        }
+        _agent.SetDestination(destination);
     }
 
     //Attack state
     private void Attack()
     {   //Raycast based attacking Physics.OverlapSphere can also work well here but the collider issue and it's present with raycasts too ofc.
         if (!_canAttack) return;
-        if (_enemyType == EnemyType.Flying) return;
         _agent.SetDestination(transform.position);
         float distance = Vector3.Distance(transform.position, _target.position);
         if (distance < _attackDistance)
@@ -204,19 +147,15 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    private void TakeDamage(float damage)
     {
         _health -= damage;
 
         if (_health >= 0)
         {
+            GameManager.Instance.Player.SetParent(null);
             Destroy(gameObject);
         }
-    }
-
-    private void MoveToPosition(Vector3 targetPosition)
-    {
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * _moveSpeed);
     }
     
     //Calculate the damage this is simple asf for now but can contain crits etc.
@@ -233,5 +172,13 @@ public class EnemyScript : MonoBehaviour
         _canAttack = false;
         yield return new WaitForSeconds(_attackSpeed);
         _canAttack = true;
+    }
+    
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            TakeDamage(20);
+        }
     }
 }

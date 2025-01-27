@@ -1,45 +1,57 @@
 using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EnemySpawnerScript : MonoBehaviour
 {   
     [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private List<Transform> _spawnPoints;
+    [SerializeField] private int _minSpawnAmount;
+    [SerializeField] private int _maxSpawnAmount;
+    [SerializeField] private TMP_Text _enemiesLeftText;
 
-    [SerializeField] private float _waves;
-    [SerializeField] private float _spawnRate;
-    [SerializeField] private float _enemiesPerSpawn;
-    [SerializeField] private float _difficultyScaleRate;
-    [SerializeField] private float _spawnRadius;
-
-    private bool _spawning;
+    private List<GameObject> _spawnedEnemies = new();
+    private bool _canSpawn = true;
 
     private void Start()
     {
-        StartCoroutine(SpawnRoutine());
+        StartCoroutine(SpawnEnemiesRoutine());
+    }
+
+    private void Update()
+    {
+        if (_spawnedEnemies.Count <= 0)
+        {
+            _canSpawn = true;
+        }
+
+        else
+        {
+            _canSpawn = false;
+        }
+
+        _enemiesLeftText.text = _spawnedEnemies.Count.ToString();
     }
 
     private void SpawnEnemy()
     {
-        Vector3 spawnPosition = Random.insideUnitSphere * _spawnRadius;
-        spawnPosition.y = 0.2f;
+        Vector3 spawnPosition = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
 
-        Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+        var enemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
+        _spawnedEnemies.Add(enemy);
     }
 
-    private IEnumerator SpawnRoutine()
+    private IEnumerator SpawnEnemiesRoutine()
     {
-        if (_spawning) yield return null;
-        _spawning = true;
-
-        while (_enemiesPerSpawn > 0)
+        if (!_canSpawn) yield return null;
+        int enemiesToSpawn = Random.Range(_minSpawnAmount, _maxSpawnAmount);
+        while (enemiesToSpawn > 0)
         {
             SpawnEnemy();
-            _enemiesPerSpawn--;
-            Debug.Log(_enemiesPerSpawn);
-
-            yield return null;
+            enemiesToSpawn--;
         }
 
-        _spawning = false;
+        yield return null;
     }
 }
