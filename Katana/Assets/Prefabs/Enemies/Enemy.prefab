@@ -125,13 +125,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2709bd3d138746671a1fff96b30679d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackSpeed: 2
+  _attackSpeed: 4
   _minDamage: 2
   _maxDamage: 10
   _spotDistance: 50
-  _attackDistance: 5
+  _attackDistance: 8
   _maxHealth: 100
   _fleeHealth: 20
+  _bloodParticles: {fileID: 0}
 --- !u!195 &6990683062710294432
 NavMeshAgent:
   m_ObjectHideFlags: 0

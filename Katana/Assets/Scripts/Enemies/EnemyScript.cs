@@ -29,7 +29,8 @@ public class EnemyScript : MonoBehaviour
 
     private NavMeshAgent _agent;
     private State _state;
-    private bool _canAttack;
+    private bool _canAttack = true;
+    private bool _canBeAttacked;
     private float _health;
 
     private void Awake()
@@ -39,15 +40,13 @@ public class EnemyScript : MonoBehaviour
 
     private void Start()
     {
-        _canAttack = true;
         _health = _maxHealth;
 
         _target = GameManager.Instance.Player;
     }
 
     private void Update()
-    {   
-
+    {
         //If no target found be idle and look for a target
         if (_target == null)
         {
@@ -89,8 +88,6 @@ public class EnemyScript : MonoBehaviour
                 Flee();
                 break;
         }
-
-        Debug.Log(_target.position);
     }
 
     //Idle state
@@ -149,6 +146,7 @@ public class EnemyScript : MonoBehaviour
 
     private void TakeDamage(float damage)
     {
+        if (!_canBeAttacked) return;
         _health -= damage;
 
         if (_health >= 0)
@@ -170,8 +168,10 @@ public class EnemyScript : MonoBehaviour
     {
         if (!_canAttack) yield return null;
         _canAttack = false;
+        _canBeAttacked = true;
         yield return new WaitForSeconds(_attackSpeed);
         _canAttack = true;
+        _canBeAttacked = false;
     }
     
     private void OnCollisionEnter(Collision collision)
