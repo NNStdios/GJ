@@ -7,7 +7,6 @@ public class EnemyScript : MonoBehaviour
 {
     private enum State
     {
-        Idle,
         Chase,
         Attack,
         Flee
@@ -17,7 +16,6 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private float _attackSpeed = 1.6f;
     [SerializeField] private float _minDamage = 10;
     [SerializeField] private float _maxDamage = 20;
-    [SerializeField] private float _spotDistance = 50f;
     [SerializeField] private float _attackDistance = 5f;
     [SerializeField] private float _maxHealth = 20f;
     [SerializeField] private float _fleeHealth = 20f;
@@ -47,20 +45,9 @@ public class EnemyScript : MonoBehaviour
 
     private void Update()
     {
-        //If no target found be idle and look for a target
-        if (_target == null)
-        {
-            _state = State.Idle;
-            return;
-        }
+        if (_target == null) return;
 
-        float distance = Vector3.Distance(transform.position, _target.transform.position);
-        if (distance > _spotDistance)
-        {
-            _state = State.Idle;
-        }
-
-        else if (_health <= _fleeHealth)
+        if (_health <= _fleeHealth)
         {
             _state = State.Flee;
         }
@@ -72,10 +59,6 @@ public class EnemyScript : MonoBehaviour
 
         switch (_state)
         {
-            case State.Idle:
-                Idle();
-                break;
-
             case State.Chase:
                 Chase();
                 break;
@@ -90,16 +73,10 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    //Idle state
-    private void Idle()
-    {
-        _agent.SetDestination(transform.position);
-    }
-
     //Chase state
     private void Chase()
     {
-        _agent.SetDestination(_target.position);
+        SetDestination(_target.position);
 
         if (Vector3.Distance(transform.position, _target.position) < _attackDistance)
         {
@@ -111,17 +88,17 @@ public class EnemyScript : MonoBehaviour
     private void Flee()
     {
         //Flee is some direction this is some random calculation idk
-        Vector3 fleeDirection = (transform.position - _target.position).normalized * _spotDistance;
+        Vector3 fleeDirection = (transform.position - _target.position).normalized * 20f;
         Vector3 destination = transform.position + fleeDirection;
 
-        _agent.SetDestination(destination);
+        SetDestination(destination);
     }
 
     //Attack state
     private void Attack()
     {   //Raycast based attacking Physics.OverlapSphere can also work well here but the collider issue and it's present with raycasts too ofc.
         if (!_canAttack) return;
-        _agent.SetDestination(transform.position);
+        SetDestination(transform.position);
         float distance = Vector3.Distance(transform.position, _target.position);
         if (distance < _attackDistance)
         {
@@ -142,6 +119,13 @@ public class EnemyScript : MonoBehaviour
         {
             _state = State.Chase;
         }
+    }
+
+    private void SetDestination(Vector3 destination)
+    {
+        Vector3 movePosition = destination;
+        movePosition.y = 0;
+        _agent.SetDestination(movePosition);
     }
 
     private void TakeDamage(float damage)
