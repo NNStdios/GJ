@@ -43,6 +43,7 @@ GameObject:
   - component: {fileID: 7866805105696818783}
   - component: {fileID: 169029361280252845}
   - component: {fileID: 8219426985473347176}
+  - component: {fileID: 311339141503981061}
   m_Layer: 0
   m_Name: ShopItem
   m_TagString: Untagged
@@ -64,7 +65,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8682069243499885523}
-  - {fileID: 1317354002996645954}
+  - {fileID: 1106153777146882966}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &169029361280252845
@@ -100,12 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ba96e516b32678a08e0403b8f25d48d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Ancient Katana
-  _item: {fileID: 8682069243499885523}
-  _uiPanel: {fileID: 4812942164387963383}
-  _nameTMP: {fileID: 1047298861833746909}
-  _position: {x: 0, y: 1, z: 0}
-  _animationTime: 0.5
+  _item: {fileID: 11400000, guid: b38cab2c5a18223078a69a4110f997db, type: 2}
+  _itemTransform: {fileID: 8682069243499885523}
+  _uiPanel: {fileID: 6907105544014535203}
+  _nameTMP: {fileID: 1412219638884024841}
+  _priceTMP: {fileID: 3317317178604266141}
+  _position: {x: 0, y: 1.25, z: 0}
+  _animationTime: 0.3
   _animationEasing:
     serializedVersion: 2
     m_Curve:
@@ -149,6 +151,70 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _rotationSpeed: 180
+--- !u!114 &311339141503981061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6463576154645440841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8219426985473347176}
+          m_TargetAssemblyTypeName: Assets.Scripts.MainMenu.Shop.ShopItemScript,
+            Assembly-CSharp
+          m_MethodName: Hover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8219426985473347176}
+          m_TargetAssemblyTypeName: Assets.Scripts.MainMenu.Shop.ShopItemScript,
+            Assembly-CSharp
+          m_MethodName: Unhover
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 8219426985473347176}
+          m_TargetAssemblyTypeName: Assets.Scripts.MainMenu.Shop.ShopItemScript,
+            Assembly-CSharp
+          m_MethodName: Select
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6515032739907064029
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,7 +301,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &187689682954873397
+--- !u!1001 &2272972310929592801
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -269,11 +335,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -285,7 +351,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.1
       objectReference: {fileID: 0}
     - target: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -332,10 +398,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
---- !u!114 &1047298861833746909 stripped
+--- !u!224 &1106153777146882966 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
+  m_PrefabInstance: {fileID: 2272972310929592801}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1412219638884024841 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 869773078341784552, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
-  m_PrefabInstance: {fileID: 187689682954873397}
+  m_PrefabInstance: {fileID: 2272972310929592801}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -343,13 +414,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &1317354002996645954 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1212278338119940727, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
-  m_PrefabInstance: {fileID: 187689682954873397}
+--- !u!114 &3317317178604266141 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3567486576399479676, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
+  m_PrefabInstance: {fileID: 2272972310929592801}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &4812942164387963383 stripped
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &6907105544014535203 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4634713793486638018, guid: 2a4bb4a7c432b9a359b3cb33f8ac776f, type: 3}
-  m_PrefabInstance: {fileID: 187689682954873397}
+  m_PrefabInstance: {fileID: 2272972310929592801}
   m_PrefabAsset: {fileID: 0}

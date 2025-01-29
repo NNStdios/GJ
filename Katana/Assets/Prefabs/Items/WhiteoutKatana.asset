@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a21134f56454c77bc3b9e8b77bf2228, type: 3}
+  m_Name: WhiteoutKatana
+  m_EditorClassIdentifier: 
+  Name: Whiteout Katana
+  Price: 500
+  UnlockedByDefault: 1
+  Material: {fileID: 2100000, guid: fb7f9a9eea0216a4b80ea8aa16942ea9, type: 2}

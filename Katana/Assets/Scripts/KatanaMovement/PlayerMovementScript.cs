@@ -25,6 +25,7 @@ namespace Assets.Scripts.KatanaMovement
         [Header("Components")]
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Collider _collider;
+        [SerializeField] private Renderer _renderer;
         [SerializeField] private Transform _decalPrefab;
         [SerializeField] private Transform _decalPoint;
 
@@ -70,6 +71,11 @@ namespace Assets.Scripts.KatanaMovement
         private void Reset()
         {
             _rb = GetComponent<Rigidbody>();
+        }
+
+        private void Start()
+        {
+            _renderer.sharedMaterial = GameManager.ItemManager.SelectedItem.Material;
         }
 
         private void Update()
@@ -297,7 +303,7 @@ namespace Assets.Scripts.KatanaMovement
             }
 
             // TODO: Replace with a custom cursor
-            // Show and unlk the cursor
+            // Show and unlock the cursor
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
 
@@ -311,7 +317,7 @@ namespace Assets.Scripts.KatanaMovement
                 yield return null;
             }
 
-            // Hide and locthe cursor
+            // Hide and lock the cursor
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 

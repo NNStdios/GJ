@@ -1,24 +1,34 @@
 using System.Collections;
+using System.Globalization;
+using Assets.Scripts.Core;
+using Assets.Scripts.Items;
 using NnUtils.Scripts;
 using TMPro;
 using UnityEngine;
+using Color = UnityEngine.Color;
 
 namespace Assets.Scripts.MainMenu.Shop
 {
     public class ShopItemScript : MonoBehaviour
     {
-        public string Name;
-
+        private static ItemManager ItemManager => GameManager.ItemManager;
+        
         [Header("Components")]
+        
+        [Tooltip("Item")]
+        [SerializeField] private Item _item;
 
         [Tooltip("Mesh that will be animated")]
-        [SerializeField] private Transform _item;
+        [SerializeField] private Transform _itemTransform;
 
         [Tooltip("Panel that holds ui components")]
         [SerializeField] private RectTransform _uiPanel;
 
         [Tooltip("Name TMP_Text")]
         [SerializeField] private TMP_Text _nameTMP;
+        
+        [Tooltip("Price TMP_Text")]
+        [SerializeField] private TMP_Text _priceTMP;
 
         [Header("Animation")]
 
@@ -34,29 +44,36 @@ namespace Assets.Scripts.MainMenu.Shop
         [Tooltip("Speed at which the object will rotate")]
         [SerializeField] private float _rotationSpeed = 180;
 
-        private void Awake()
+        private void Start()
         {
-            _nameTMP.text = Name;
+            _nameTMP.text    =  _item.Name;
+            ItemManager.OnItemChanged += UpdateUI;
+            UpdateUI();
         }
 
-        private void OnMouseEnter()
+        private void UpdateUI()
         {
-            Select();
+            _priceTMP.text = _item.Unlocked
+                ? ItemManager.SelectedItem == _item ? "Selected" : "Unlocked"
+                : $@"₦{_item.Price.ToString(CultureInfo.InvariantCulture)}";
+            _priceTMP.color = _item.Unlocked
+                ? ItemManager.SelectedItem == _item ? Color.cyan : Color.white
+                : _item.Price > ItemManager.Coins ? Color.red : Color.green;
         }
 
-        private void OnMouseExit()
+        public void Select()
         {
-            Deselect();
+            ItemManager.SelectItem(_item);
         }
 
-        private void Select()
+        public void Hover()
         {
             this.StopRoutine(ref _deselectRoutine);
             this.RestartRoutine(ref _rotateRoutine, RotateRoutine());
             this.RestartRoutine(ref _selectRoutine, SelectRoutine());
         }
 
-        private void Deselect()
+        public void Unhover()
         {
             this.StopRoutine(ref _rotateRoutine);
             this.StopRoutine(ref _selectRoutine);
@@ -66,7 +83,7 @@ namespace Assets.Scripts.MainMenu.Shop
         private Coroutine _selectRoutine;
         private IEnumerator SelectRoutine()
         {
-            Vector3 startPos = _item.localPosition;
+            Vector3 startPos = _itemTransform.localPosition;
             Vector3 uiStartPos = _uiPanel.localPosition;
             Vector3 uiStartScale = _uiPanel.localScale;
 
@@ -79,7 +96,7 @@ namespace Assets.Scripts.MainMenu.Shop
                 var t = _animationEasing.Evaluate(Misc.Tween(ref lerpPos, _animationTime, unscaled: true));
 
                 // Update item
-                _item.localPosition = Vector3.LerpUnclamped(startPos, _position, t);
+                _itemTransform.localPosition = Vector3.LerpUnclamped(startPos, _position, t);
 
                 // Update UI
                 _uiPanel.localPosition = Vector3.LerpUnclamped(uiStartPos, _position, t);
@@ -95,8 +112,8 @@ namespace Assets.Scripts.MainMenu.Shop
         private Coroutine _deselectRoutine;
         private IEnumerator DeselectRoutine()
         {
-            var startPos = _item.localPosition;
-            var startRot = _item.localRotation;
+            var startPos = _itemTransform.localPosition;
+            var startRot = _itemTransform.localRotation;
             var uiStartPos = _uiPanel.localPosition;
             var uiStartScale = _uiPanel.localScale;
 
@@ -108,8 +125,8 @@ namespace Assets.Scripts.MainMenu.Shop
                 var t = _animationEasing.Evaluate(Misc.Tween(ref lerpPos, _animationTime, unscaled: true));
 
                 // Update Item
-                _item.localPosition = Vector3.LerpUnclamped(startPos, Vector3.zero, t);
-                _item.localRotation = Quaternion.LerpUnclamped(startRot, Quaternion.identity, t);
+                _itemTransform.localPosition = Vector3.LerpUnclamped(startPos, Vector3.zero, t);
+                _itemTransform.localRotation = Quaternion.LerpUnclamped(startRot, Quaternion.identity, t);
 
                 // Update UI
                 _uiPanel.localPosition = Vector3.LerpUnclamped(uiStartPos, Vector3.zero, t);
@@ -129,7 +146,7 @@ namespace Assets.Scripts.MainMenu.Shop
 
             while (true)
             {
-                _item.Rotate(rot * Time.deltaTime);
+                _itemTransform.Rotate(rot * Time.deltaTime);
                 yield return null;
             }
         }

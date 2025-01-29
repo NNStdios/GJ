@@ -165,6 +165,7 @@ MonoBehaviour:
   IsPerformingStrikeImpact: 0
   _rb: {fileID: 6053209432441537912}
   _collider: {fileID: 6443529158496922150}
+  _renderer: {fileID: 6588910724352230419}
   _decalPrefab: {fileID: 2951458016823287143, guid: 4d376fa6d8db48692861ce21e2b116ab, type: 3}
   _decalPoint: {fileID: 4659045580749405382}
   _cameraSwitchDuration: 0.5
@@ -451,6 +452,11 @@ PrefabInstance:
 --- !u!65 &6443529158496922150 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1097252380485033150, guid: 5fc0b7a45e9f0344b9ee07143ea41846, type: 3}
+  m_PrefabInstance: {fileID: 6221224362450073240}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6588910724352230419 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 947649265504711307, guid: 5fc0b7a45e9f0344b9ee07143ea41846, type: 3}
   m_PrefabInstance: {fileID: 6221224362450073240}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6841603374842545881 stripped

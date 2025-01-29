@@ -45,8 +45,14 @@ namespace Assets.Scripts.MainMenu
         {
             this.RestartRoutine(ref _rotateCameraRoutine, RotateCameraRoutine(_settingsRotation));
         }
-        
-        public void Quit() => Application.Quit();
+
+        public void Quit()
+        {
+            Application.Quit();
+#if (UNITY_WEBGL)
+            Application.ExternalEval("window.open('" + "https://github.io/nnra6864/nnra" + "','_self')");
+#endif
+        }
 
         private Coroutine _rotateCameraRoutine;
 
