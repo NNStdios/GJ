@@ -31,14 +31,14 @@ namespace Assets.Scripts.Core
         [ReadOnly] [SerializeField] private TimeScaleManager _timeScaleManager;
         public static TimeScaleManager TimeScaleManager => Instance._timeScaleManager;
 
-<<<<<<< HEAD
-        [HideInInspector]public Transform Player;
-
-=======
         [ReadOnly] [SerializeField] private ItemManager _itemManager;
         public static ItemManager ItemManager => Instance._itemManager;
+
+        [ReadOnly] [SerializeField] private EnemySpawnerScript _enemySpawnerScript;
+        public static EnemySpawnerScript EnemySpawnerScript => Instance._enemySpawnerScript;
+
+        [HideInInspector] public Transform Player;
         
->>>>>>> 8d598c5b5405a10b39194f726c3cae599fb9bba6
         private void Reset()
         {
             _timeScaleManager = this.GetOrAddComponent<TimeScaleManager>();
@@ -50,15 +50,13 @@ namespace Assets.Scripts.Core
             if (_instance == null) Instance = this;
             else if (_instance != this) Destroy(gameObject);
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            Player = GameObject.FindGameObjectWithTag("Player").transform;
         }
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
-<<<<<<< HEAD
-            Player = GameObject.FindGameObjectWithTag("Player").transform;
-=======
             TimeScaleManager.UpdateTimeScale(1, -100);
->>>>>>> 8d598c5b5405a10b39194f726c3cae599fb9bba6
         }
     }
 }

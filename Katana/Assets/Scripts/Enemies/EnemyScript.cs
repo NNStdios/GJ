@@ -8,8 +8,7 @@ public class EnemyScript : MonoBehaviour
     private enum State
     {
         Chase,
-        Attack,
-        Flee
+        Attack
     }
 
     [Header("Enemy Stats")]
@@ -18,7 +17,6 @@ public class EnemyScript : MonoBehaviour
     [SerializeField] private float _maxDamage = 20;
     [SerializeField] private float _attackDistance = 5f;
     [SerializeField] private float _maxHealth = 20f;
-    [SerializeField] private float _fleeHealth = 20f;
 
     [Header("Referecnes")]
     [SerializeField] private ParticleSystem _bloodParticles;
@@ -30,10 +28,12 @@ public class EnemyScript : MonoBehaviour
     private bool _canAttack = true;
     private bool _canBeAttacked;
     private float _health;
+    private Animator _animator;
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _animator = GetComponentInChildren<Animator>();
     }
 
     private void Start()
@@ -41,21 +41,12 @@ public class EnemyScript : MonoBehaviour
         _health = _maxHealth;
 
         _target = GameManager.Instance.Player;
+        _state = State.Chase;
     }
 
     private void Update()
     {
-        if (_target == null) return;
-
-        if (_health <= _fleeHealth)
-        {
-            _state = State.Flee;
-        }
-
-        else
-        {
-            _state = State.Chase;
-        }
+        Debug.Log(_state);
 
         switch (_state)
         {
@@ -65,10 +56,6 @@ public class EnemyScript : MonoBehaviour
 
             case State.Attack:
                 Attack();
-                break;
-
-            case State.Flee:
-                Flee();
                 break;
         }
     }
@@ -84,30 +71,22 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
-    //Flee state
-    private void Flee()
-    {
-        //Flee is some direction this is some random calculation idk
-        Vector3 fleeDirection = (transform.position - _target.position).normalized * 20f;
-        Vector3 destination = transform.position + fleeDirection;
-
-        SetDestination(destination);
-    }
-
     //Attack state
     private void Attack()
-    {   //Raycast based attacking Physics.OverlapSphere can also work well here but the collider issue and it's present with raycasts too ofc.
+    {   
+        Debug.Log("Attacking");
         if (!_canAttack) return;
-        SetDestination(transform.position);
         float distance = Vector3.Distance(transform.position, _target.position);
         if (distance < _attackDistance)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(transform.position, transform.forward, out hit, _attackDistance))
+
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, _attackDistance);
+            foreach (var hitCollider in hitColliders)
             {
-                if (hit.transform.TryGetComponent<HealthScript>(out HealthScript healthScript))
+                Debug.Log(hitCollider.transform);
+                if (hitCollider.TryGetComponent<HealthScript>(out HealthScript healthScript))
                 {
-                    healthScript.TakeDamage(CalculateDamage());
+                    StartCoroutine(DamageRoutine(healthScript));
                 }
             }
 
@@ -136,6 +115,7 @@ public class EnemyScript : MonoBehaviour
         if (_health >= 0)
         {
             GameManager.Instance.Player.SetParent(null);
+            GameManager.EnemySpawnerScript.SpawnedEnemies.Remove(gameObject);
             Destroy(gameObject);
         }
     }
@@ -153,16 +133,30 @@ public class EnemyScript : MonoBehaviour
         if (!_canAttack) yield return null;
         _canAttack = false;
         _canBeAttacked = true;
-        yield return new WaitForSeconds(_attackSpeed);
+        _animator.SetTrigger("Attacking");
+        yield return new WaitForSecondsRealtime(_attackSpeed);
         _canAttack = true;
         _canBeAttacked = false;
+    }
+
+    private IEnumerator DamageRoutine(HealthScript healthScript)
+    {
+        yield return new WaitForSeconds(0.2f);
+        healthScript.TakeDamage(CalculateDamage());
+
     }
     
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.TryGetComponent<Rigidbody>(out Rigidbody rb))
         {
-            TakeDamage(20);
+            if (rb.linearVelocity.magnitude > 10f)
+            {
+                if (collision.gameObject.tag == "Player")
+                {
+                    TakeDamage(20);
+                }
+            }
         }
     }
 }

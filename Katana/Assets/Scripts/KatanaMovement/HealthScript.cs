@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HealthScript : MonoBehaviour
 {
@@ -12,10 +13,9 @@ public class HealthScript : MonoBehaviour
         _health -= damage;
         Debug.Log("Took Damage: " + damage);
 
-        if (_health >= 0)
+        if (_health <= 0)
         {
-            Debug.Log("Health: 0");
-            _health = 100;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

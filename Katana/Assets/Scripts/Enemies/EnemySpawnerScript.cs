@@ -11,7 +11,7 @@ public class EnemySpawnerScript : MonoBehaviour
     [SerializeField] private int _maxSpawnAmount;
     [SerializeField] private TMP_Text _enemiesLeftText;
 
-    private List<GameObject> _spawnedEnemies = new();
+    public List<GameObject> SpawnedEnemies = new();
     private bool _canSpawn = true;
 
     private void Start()
@@ -21,7 +21,7 @@ public class EnemySpawnerScript : MonoBehaviour
 
     private void Update()
     {
-        if (_spawnedEnemies.Count <= 0)
+        if (SpawnedEnemies.Count <= 0)
         {
             _canSpawn = true;
         }
@@ -31,7 +31,7 @@ public class EnemySpawnerScript : MonoBehaviour
             _canSpawn = false;
         }
 
-        _enemiesLeftText.text = _spawnedEnemies.Count.ToString();
+        _enemiesLeftText.text = SpawnedEnemies.Count.ToString();
     }
 
     private void SpawnEnemy()
@@ -39,7 +39,7 @@ public class EnemySpawnerScript : MonoBehaviour
         Vector3 spawnPosition = _spawnPoints[Random.Range(0, _spawnPoints.Count)].position;
 
         var enemy = Instantiate(_enemyPrefab, spawnPosition, Quaternion.identity);
-        _spawnedEnemies.Add(enemy);
+        SpawnedEnemies.Add(enemy);
     }
 
     private IEnumerator SpawnEnemiesRoutine()
