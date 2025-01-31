@@ -77,7 +77,6 @@ MonoBehaviour:
   _attackDistance: 2
   _maxHealth: 100
   _bloodParticles: {fileID: 0}
-  _weakMark: {fileID: 2650063591884787607}
 --- !u!195 &6990683062710294432
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -190,7 +189,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &179453639138779682
 RectTransform:
   m_ObjectHideFlags: 0

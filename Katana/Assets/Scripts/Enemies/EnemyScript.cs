@@ -7,6 +7,7 @@ public class EnemyScript : MonoBehaviour
 {
     private enum State
     {
+        Idle,
         Chase,
         Attack
     }
@@ -20,7 +21,6 @@ public class EnemyScript : MonoBehaviour
 
     [Header("Referecnes")]
     [SerializeField] private ParticleSystem _bloodParticles;
-    [SerializeField] private GameObject _weakMark;
 
     private Transform _target;
 
@@ -49,6 +49,10 @@ public class EnemyScript : MonoBehaviour
     {
         switch (_state)
         {
+            case State.Idle:
+                Idle();
+                break;
+
             case State.Chase:
                 Chase();
                 break;
@@ -57,8 +61,11 @@ public class EnemyScript : MonoBehaviour
                 Attack();
                 break;
         }
+    }
 
-        _weakMark.transform.LookAt(Camera.main.transform);
+    private void Idle()
+    {
+        SetDestination(transform.position);
     }
 
     //Chase state
@@ -134,11 +141,11 @@ public class EnemyScript : MonoBehaviour
         _canAttack = false;
         _canBeAttacked = true;
         Debug.Log("Weak");
-        _weakMark.SetActive(true);
+        _state = State.Idle;
         _animator.SetTrigger("Attacking");
         yield return new WaitForSecondsRealtime(_attackSpeed);
         _canAttack = true;
-        _weakMark.SetActive(false);
+        _state = State.Chase;
         Debug.Log("Not weak");
         _canBeAttacked = false;
     }
