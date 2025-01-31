@@ -1,5 +1,6 @@
 using System.Collections;
 using Assets.Scripts.Core;
+using Assets.Scripts.PlayerCamera;
 using Assets.Scripts.TimeScale;
 using NnUtils.Scripts;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Assets.Scripts.KatanaMovement
     public class PlayerMovementScript : MonoBehaviour
     {
         private static Camera Cam => PSM.CameraManager.Camera;
-        private static string CamHandler => PSM.PlayerCameraHandler;
+        private static SettingsManager Settings => GameManager.SettingsManager;
 
         /// Whether the player is currently stuck
         [ReadOnly] public bool IsStuck;
@@ -76,6 +77,7 @@ namespace Assets.Scripts.KatanaMovement
         private void Start()
         {
             _renderer.sharedMaterial = GameManager.ItemManager.SelectedItem.Material;
+            PSM.CameraManager.SwitchCameraHandler(Settings.Perspective, _cameraSwitchDuration, _cameraSwitchEasing, unscaled: true);
         }
 
         private void Update()
@@ -198,15 +200,15 @@ namespace Assets.Scripts.KatanaMovement
 
         private void ToggleCamera()
         {
-            PSM.PlayerCameraHandler = CamHandler switch
+            Settings.Perspective = Settings.Perspective switch
             {
-                PSM.FPCameraHandler => PSM.RightCameraHandler,
-                PSM.RightCameraHandler => PSM.TPCameraHandler,
-                PSM.TPCameraHandler => PSM.LeftCameraHandler,
-                _ => PSM.FPCameraHandler
+                Perspective.First => Perspective.Right,
+                Perspective.Right => Perspective.Third,
+                Perspective.Third => Perspective.Left,
+                _ => Perspective.First
             };
 
-            PSM.CameraManager.SwitchCameraHandler(CamHandler, _cameraSwitchDuration, _cameraSwitchEasing, unscaled: true);
+            PSM.CameraManager.SwitchCameraHandler(Settings.Perspective, _cameraSwitchDuration, _cameraSwitchEasing, unscaled: true);
         }
 
         private void Flip()
@@ -292,7 +294,7 @@ namespace Assets.Scripts.KatanaMovement
             float lerpPos = 0;
 
             // Start the camera switch and animation
-            PSM.CameraManager.SwitchCameraHandler(PSM.StrikeCameraHandler, _strikeTransitionTime, _strikeTransitionCurve, true);
+            PSM.CameraManager.SwitchCameraHandler(Perspective.Strike, _strikeTransitionTime, _strikeTransitionCurve, true);
             while (lerpPos < 1)
             {
                 var t = _strikeTransitionCurve.Evaluate(Misc.Tween(ref lerpPos, _strikeTransitionTime, unscaled: true));
@@ -322,7 +324,7 @@ namespace Assets.Scripts.KatanaMovement
             Cursor.lockState = CursorLockMode.Locked;
 
             // Return camera to the initial handler
-            PSM.CameraManager.SwitchCameraHandler(PSM.PlayerCameraHandler, _camReturnDuration, _camReturnEasing, true);
+            PSM.CameraManager.SwitchCameraHandler(Settings.Perspective, _camReturnDuration, _camReturnEasing, true);
             yield return new WaitForSecondsRealtime(_camReturnDuration);
 
             // Perform the impact

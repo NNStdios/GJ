@@ -9,9 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1907567120669272449}
-  - component: {fileID: 5628954683069759738}
   - component: {fileID: 2837193979928555887}
+  - component: {fileID: 5628954683069759738}
   - component: {fileID: 3653763213422082960}
+  - component: {fileID: 389705453610516225}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -34,18 +35,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5628954683069759738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3814498220043547093}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3663f40409fa1bfce992b6a904226549, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2837193979928555887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58,8 +47,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a26ad2bf96c7b5218b61704d0d30da74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _settingsManager: {fileID: 389705453610516225}
   _timeScaleManager: {fileID: 5628954683069759738}
   _itemManager: {fileID: 3653763213422082960}
+--- !u!114 &5628954683069759738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3814498220043547093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3663f40409fa1bfce992b6a904226549, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3653763213422082960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80,3 +82,21 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e7739a29cfe008257b0ed1d50c342864, type: 2}
   - {fileID: 11400000, guid: b9315150976bc095d80fb50b93d4a8e9, type: 2}
   - {fileID: 11400000, guid: 129dea154419a68d1bf8cc36aee8d5c5, type: 2}
+--- !u!114 &389705453610516225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3814498220043547093}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fabaf466d2d068bd2ae4809bb57cb62c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dofProfile: {fileID: 11400000, guid: 938587e53954a523193178966c78029a, type: 2}
+  _menuDOFProfile: {fileID: 11400000, guid: c79c608b773d05460a47c1615f3713eb, type: 2}
+  _motionBlurProfile: {fileID: 11400000, guid: 09927a804cb3f1171af33436b439b7b6, type: 2}
+  _master: {fileID: 24300002, guid: 058b23a6ebdc6c69a89dbde75f191e96, type: 2}
+  _sfx: {fileID: 1831776637779280436, guid: 058b23a6ebdc6c69a89dbde75f191e96, type: 2}
+  _music: {fileID: -2359160903320283803, guid: 058b23a6ebdc6c69a89dbde75f191e96, type: 2}

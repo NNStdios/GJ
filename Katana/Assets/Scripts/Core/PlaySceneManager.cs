@@ -8,12 +8,6 @@ namespace Assets.Scripts.Core
     [RequireComponent(typeof(CameraManager))]
     public class PlaySceneManager : MonoBehaviour
     {
-        public const string TPCameraHandler = "ThirdPersonCameraHandler";
-        public const string FPCameraHandler = "FirstPersonCameraHandler";
-        public const string RightCameraHandler = "RightCameraHandler";
-        public const string LeftCameraHandler = "LeftCameraHandler";
-        public const string StrikeCameraHandler = "StrikeCameraHandler";
-
         private static PlaySceneManager _instance;
         public static PlaySceneManager Instance => _instance = FindFirstObjectByType<PlaySceneManager>();
 
@@ -45,13 +39,6 @@ namespace Assets.Scripts.Core
                 if (!Instance) return null;
                 return Instance._cameraManager ??= Instance.gameObject.GetOrAddComponent<CameraManager>();
             }
-        }
-
-        [SerializeField] private string _playerCameraHandler = FPCameraHandler;
-        public static string PlayerCameraHandler
-        {
-            get => Instance?._playerCameraHandler;
-            set => Instance._playerCameraHandler = value;
         }
 
         private void Reset()

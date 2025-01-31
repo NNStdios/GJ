@@ -163,14 +163,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f29703eec8acd9cb5e8f84f5a4edb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Perspective: 1
+  _cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
   _offset: {x: 0, y: 1, z: -5}
   _localOffset: 0
   _translateOffset: 1
   _rotateCamera: 1
   _rotationOffset: {x: -90, y: 0, z: 0}
-  _cameraCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &236467734
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +385,6 @@ MonoBehaviour:
   _player: {fileID: 1461481850}
   _playerMovement: {fileID: 1461481852}
   _cameraManager: {fileID: 843226436}
-  _playerCameraHandler: FirstPersonCameraHandler
 --- !u!114 &843226436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -623,6 +623,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db7e62bdeb3d42ca8caa96b8db5675cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _followMouse: 0
   _dofPoint: {fileID: 513143999}
   _dof: {fileID: -8719300124806374663, guid: 938587e53954a523193178966c78029a, type: 2}
   _gaussianSize: 10
@@ -675,14 +676,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f29703eec8acd9cb5e8f84f5a4edb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Perspective: 4
+  _cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
   _offset: {x: 0, y: 10, z: 0}
   _localOffset: 0
   _translateOffset: 0
   _rotateCamera: 0
   _rotationOffset: {x: 0, y: 0, z: 0}
-  _cameraCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!20 &2087302220 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4375933169161659300, guid: 0b5652fce5a95c7a583ae46bbcd4589f, type: 3}

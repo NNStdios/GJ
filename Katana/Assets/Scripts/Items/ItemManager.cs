@@ -11,7 +11,6 @@ namespace Assets.Scripts.Items
         public int Coins
         {
             get => _coins;
-
             private set
             {
                 if (Mathf.Approximately(_coins, value)) return;

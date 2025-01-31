@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.Core
 {
+    [RequireComponent(typeof(SettingsManager))]
     [RequireComponent(typeof(TimeScaleManager))]
     [RequireComponent(typeof(ItemManager))]
     public class GameManager : MonoBehaviour
@@ -28,6 +29,9 @@ namespace Assets.Scripts.Core
             }
         }
 
+        [ReadOnly] [SerializeField] private SettingsManager _settingsManager;
+        public static SettingsManager SettingsManager => Instance._settingsManager;
+        
         [ReadOnly] [SerializeField] private TimeScaleManager _timeScaleManager;
         public static TimeScaleManager TimeScaleManager => Instance._timeScaleManager;
 
@@ -41,6 +45,7 @@ namespace Assets.Scripts.Core
         
         private void Reset()
         {
+            _settingsManager = GetComponent<SettingsManager>();
             _timeScaleManager = this.GetOrAddComponent<TimeScaleManager>();
             _itemManager = this.GetOrAddComponent<ItemManager>();
         }

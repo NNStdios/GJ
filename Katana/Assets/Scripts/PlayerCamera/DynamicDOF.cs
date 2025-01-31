@@ -11,10 +11,12 @@ namespace Assets.Scripts.PlayerCamera
     [RequireComponent(typeof(Volume))]
     public class DynamicDOF : MonoBehaviour
     {
-        private static Camera Camera => PlaySceneManager.CameraManager.Camera;
+        private static Camera _cam;
+        private static Camera Camera => _cam ??= Camera.main;
 
         private float _distance, _previousDistance;
 
+        [SerializeField] private bool _followMouse;
         [SerializeField] private Transform _dofPoint;
         [SerializeField] private DepthOfField _dof;
         [SerializeField] private float _gaussianSize = 20;
@@ -37,8 +39,10 @@ namespace Assets.Scripts.PlayerCamera
             // Set the default distance to 10000(basically no dof)
             float distance = 1000;
 
-            // Create a ray from the camera center, check for hits and update the distance accordingly
-            Ray ray = new(_dofPoint.position, _dofPoint.forward);
+            // Create a ray and set the distance if there was a hit
+            var ray = _followMouse
+                ? Camera.ScreenPointToRay(Input.mousePosition)
+                : new(_dofPoint.position, _dofPoint.forward);
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _layerMask)) distance = hit.distance;
 
             // Check if object distance is approx the same and return

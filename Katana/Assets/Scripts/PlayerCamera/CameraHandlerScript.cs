@@ -1,11 +1,15 @@
 using Assets.Scripts.Core;
 using UnityEngine;
 
-namespace PlayerCamera
+namespace Assets.Scripts.PlayerCamera
 {
     public class CameraHandlerScript : MonoBehaviour
     {
         private static Transform Player => PlaySceneManager.Player.transform;
+        
+        [Header("")]
+        public Perspective Perspective;
+        [SerializeField] private LayerMask _cameraCollisionMask;
 
         [Header("Position")]
         [Tooltip("Offset from the player")]
@@ -23,9 +27,6 @@ namespace PlayerCamera
 
         [Tooltip("Delta between the player rotation and camera rotation")]
         [SerializeField] private Vector3 _rotationOffset;
-
-        [Header("")]
-        [SerializeField] private LayerMask _cameraCollisionMask;
 
         private void Start()
         {

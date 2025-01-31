@@ -75,14 +75,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f29703eec8acd9cb5e8f84f5a4edb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Perspective: 3
+  _cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
   _offset: {x: -0.15, y: -1.5, z: 0}
   _localOffset: 1
   _translateOffset: 0
   _rotateCamera: 0
   _rotationOffset: {x: 0, y: 0, z: 0}
-  _cameraCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &1402137443040997536
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,14 +293,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f29703eec8acd9cb5e8f84f5a4edb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Perspective: 0
+  _cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
   _offset: {x: 0, y: -1.65, z: -0.2}
   _localOffset: 1
   _translateOffset: 0
   _rotateCamera: 0
   _rotationOffset: {x: 0, y: 0, z: 0}
-  _cameraCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1 &5140100605762766378
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,14 +346,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5f29703eec8acd9cb5e8f84f5a4edb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Perspective: 2
+  _cameraCollisionMask:
+    serializedVersion: 2
+    m_Bits: 1
   _offset: {x: 0.15, y: -1.5, z: 0}
   _localOffset: 1
   _translateOffset: 0
   _rotateCamera: 0
   _rotationOffset: {x: 0, y: 0, z: 0}
-  _cameraCollisionMask:
-    serializedVersion: 2
-    m_Bits: 1
 --- !u!1001 &6221224362450073240
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -232,10 +232,10 @@ MonoBehaviour:
     m_Value: 1.5
   streaksIntensity:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0.25
   streaksLength:
-    m_OverrideState: 0
-    m_Value: 0.5
+    m_OverrideState: 1
+    m_Value: 0.25
   streaksOrientation:
     m_OverrideState: 0
     m_Value: 0
