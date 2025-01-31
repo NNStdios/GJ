@@ -1488,9 +1488,10 @@ MonoBehaviour:
   - {fileID: 983328030}
   - {fileID: 1263806894}
   - {fileID: 22754910}
-  _minSpawnAmount: 2
-  _maxSpawnAmount: 8
+  _minSpawnAmount: 1
+  _maxSpawnAmount: 3
   _enemiesLeftText: {fileID: 1365977358}
+  SpawnedEnemies: []
 --- !u!1001 &5783801423987687470
 PrefabInstance:
   m_ObjectHideFlags: 0

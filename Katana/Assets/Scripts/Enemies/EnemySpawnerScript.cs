@@ -26,8 +26,9 @@ public class EnemySpawnerScript : MonoBehaviour
             _canSpawn = true;
         }
 
-        else
+        if (_canSpawn)
         {
+            StartCoroutine(SpawnEnemiesRoutine());
             _canSpawn = false;
         }
 

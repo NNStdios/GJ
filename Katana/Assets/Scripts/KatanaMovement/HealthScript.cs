@@ -7,6 +7,8 @@ public class HealthScript : MonoBehaviour
     [SerializeField] private float _maxHealth;
 
     private float _health;
+    
+    private void Start() => _health = _maxHealth;
 
     public void TakeDamage(float damage)
     {
