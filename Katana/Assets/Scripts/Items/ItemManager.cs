@@ -11,10 +11,11 @@ namespace Assets.Scripts.Items
         public int Coins
         {
             get => _coins;
-            private set
+            set
             {
                 if (Mathf.Approximately(_coins, value)) return;
                 _coins = value;
+                PlayerPrefs.SetInt("Coins", _coins);
                 OnCoinsChanged?.Invoke();
             }
         }

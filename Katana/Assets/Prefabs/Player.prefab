@@ -172,6 +172,9 @@ MonoBehaviour:
   _cameraSwitchDuration: 0.5
   _cameraSwitchEasing: 16
   _tiltSpeed: 1
+  _stickMask:
+    serializedVersion: 2
+    m_Bits: 385
   _minStickVelocity: 25
   _maxStickAngle: 45
   _flipForce: {x: 20, y: 25}

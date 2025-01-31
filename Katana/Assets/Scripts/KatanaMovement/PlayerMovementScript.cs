@@ -1,5 +1,6 @@
 using System.Collections;
 using Assets.Scripts.Core;
+using Assets.Scripts.Fruits;
 using Assets.Scripts.PlayerCamera;
 using Assets.Scripts.TimeScale;
 using NnUtils.Scripts;
@@ -38,6 +39,7 @@ namespace Assets.Scripts.KatanaMovement
         [SerializeField] private float _tiltSpeed = 1;
 
         [Header("Stick")]
+        [SerializeField] private LayerMask _stickMask;
         [SerializeField] private float _minStickVelocity = 5;
         [SerializeField] private float _maxStickAngle = 45;
 
@@ -94,11 +96,14 @@ namespace Assets.Scripts.KatanaMovement
 
         private void OnCollisionEnter(Collision col)
         {
+            // Store the col layer
+            var layer = col.gameObject.layer;
+
             // If performing strike, check if something's hit
             if (IsPerformingStrikeImpact)
             {
                 // If there is no hit, do an early return
-                if ((_strikeLayerMask & 1 << col.gameObject.layer) == 0) return;
+                if ((_strikeLayerMask & 1 << layer) == 0) return;
 
                 // Handle the strike impact
                 StrikeImpact(col);
@@ -108,7 +113,7 @@ namespace Assets.Scripts.KatanaMovement
             }
 
             // Try to stick
-            Stick(col);
+            if ((_stickMask & 1 << layer) != 0) Stick(col);
         }
 
         private void Stick(Collision col)
